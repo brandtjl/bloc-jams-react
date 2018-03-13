@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import albumData from '../../src/data/albums';
+import albumData from './../data/albums';
 
 class Album extends Component {
     constructor(props) {
@@ -8,7 +8,7 @@ class Album extends Component {
         const album = albumData.find( album => {
             return album.slug === this.props.match.params.slug
         });
-
+{/* now it sets state.album property to album variable which is album with matching url */}
         this.state = {
             album: album
         };
@@ -19,7 +19,7 @@ class Album extends Component {
             <section className="album">
                 <section id="album-info">
                     <img id="album-cover-art" src={this.state.album.albumCover} />
-                    <div className='album-details'>
+                    <div className='album-details'>  {/*why use a className for some but id for others?? */}
                         <h1 id="album-title">{this.state.album.title}</h1>
                         <h2 className="artist">{this.state.album.artist}</h2>
                         <div id="release-info">{this.state.album.releaseInfo}</div>

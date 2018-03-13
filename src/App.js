@@ -17,9 +17,10 @@ class App extends Component {
           </nav>
           <h1>Bloc Jams</h1>
         </header>
-        <main>
-          <Route exact path = "/" component = {Landing} />
-          <Route path = "/library" component = {Library} />
+        <main> {/*Route components with path and component props */}    
+              
+          <Route exact path = "/" component = {Landing} />  {/* this isn't saying 'set equal to' */}
+          <Route path = "/library" component = {Library} /> {/* but is saying 'if path equals' */}
           <Route path = "/album/:slug" component = {Album} />
         </main>
 
