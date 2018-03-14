@@ -11,10 +11,35 @@ class Album extends Component {
   //now it sets state.album property to album variable which is album with matching url
         this.state = {
             album: album,
-            albums: albumData      
+            currentSong: album.songs[0],
+            isPlaying: false
+        };
+        this.audioElement = document.createElement('audio'); //not assigned to state since that would trigger a re-render of DOM
+        this.audioElement.src = album.songs[0].audioSrc; //set to the first song
+    }
+    play() {
+        this.audioElement.play(); //creates <audio> element? which executes its own play()method?
+        this.setState({ isPlaying: true });
+    }
+    pause() {
+        this.audioElement.pause();
+        this.setState({ isPlaying: false });
+    }
+    setSong(song) {
+        this.audioElement.src = song.audioSrc;
+        this.setState({ currentSong: song }); //song = song title?
+    }
+    handleSongClick(song) {
+        const isSameSong = this.state.currentSong === song; //if current song equals clicked song, sets to true
+        if (this.state.isPlaying && isSameSong) {
+            this.pause();
+        } else {
+            if (!isSameSong) {
+                this.setSong(song);
+            }
+            this.play();  //how does it know which song to play? current song is reset by setSong method above
         };
     }
-
     render() {
         return(
             <section className="album">
@@ -31,11 +56,11 @@ class Album extends Component {
                         <col id="song-number-column" />
                         <col id="song-title-column" />
                         <col id="song-duration-column" />
-                    </colgroup>  
-                    <tbody>
-                            {
+                    </colgroup>   
+                    <tbody> 
+                            {   //will only pause if i click on the first row/song 
                             this.state.album.songs.map( (song, index) => 
-                            <tr className="album-songs" key={index}>
+                            <tr className="song" key={index} onClick={ () => this.handleSongClick(song) }>
                             <td>{index + 1}</td>
                             <td>{song.title}</td>
                             <td>{song.duration}</td>
