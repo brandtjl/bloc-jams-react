@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import albumData from './../data/albums';
+import PlayerBar from './PlayerBar';
 
 class Album extends Component {
     constructor(props) {
@@ -40,6 +41,13 @@ class Album extends Component {
             this.play();  //how does it know which song to play? current song is reset by setSong method above
         };
     }
+    handlePrevClick(song) {
+        const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+        const newIndex = Math.max(0, currentIndex - 1);
+        const newSong = this.state.album.songs[newIndex];
+        this.setSong(newSong);
+        this.play(newSong);
+    }
     render() {
         return(
             <section className="album">
@@ -71,7 +79,13 @@ class Album extends Component {
                              }
                         
                     </tbody>
-                </table>
+                </table>   {/* passing props to PlayerBar component */}
+                <PlayerBar 
+                isPlaying={this.state.isPlaying} 
+                currentSong={this.state.currentSong} 
+                handleSongClick={() => this.handleSongClick(this.state.currentSong)}
+                handlePrevClick={() => this.handlePrevClick()}
+                /> {/* not used in PlayerBar yet? */}
             </section>
         );
     }
