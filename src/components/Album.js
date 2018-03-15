@@ -18,7 +18,7 @@ class Album extends Component {
         this.audioElement = document.createElement('audio'); //not assigned to state since that would trigger a re-render of DOM
         this.audioElement.src = album.songs[0].audioSrc; //set to the first song
     }
-    play() {
+    play() {   //how does this work if it doesn't accept a parameter?
         this.audioElement.play(); //creates <audio> element? which executes its own play()method?
         this.setState({ isPlaying: true });
     }
@@ -44,6 +44,13 @@ class Album extends Component {
     handlePrevClick(song) {
         const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
         const newIndex = Math.max(0, currentIndex - 1);
+        const newSong = this.state.album.songs[newIndex];
+        this.setSong(newSong);
+        this.play(newSong);  //how does this work if play() doesn't accept a parameter?
+    }
+    handleNextClick() {              //does 'song' at beginning of findIndex() function mean anything?
+        const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+        const newIndex = Math.min(this.state.album.songs.length -1, currentIndex + 1); //use .length
         const newSong = this.state.album.songs[newIndex];
         this.setSong(newSong);
         this.play(newSong);
@@ -72,8 +79,6 @@ class Album extends Component {
                             <td>{index + 1}</td>
                             <td>{song.title}</td>
                             <td>{song.duration}</td>
-                            <td className="ion-play"></td>
-                            <td className="ion-pause"></td>
                             </tr>
                             )
                              }
@@ -85,7 +90,8 @@ class Album extends Component {
                 currentSong={this.state.currentSong} 
                 handleSongClick={() => this.handleSongClick(this.state.currentSong)}
                 handlePrevClick={() => this.handlePrevClick()}
-                /> {/* not used in PlayerBar yet? */}
+                handleNextClick={() => this.handleNextClick()}
+                /> 
             </section>
         );
     }
