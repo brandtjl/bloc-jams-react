@@ -4,6 +4,7 @@ import './App.css';
 import Landing from './components/Landing';
 import Library from './components/Library';
 import Album from './components/Album';
+import {Jumbotron} from 'react-bootstrap';
 
 class App extends Component {
   render() {
@@ -11,11 +12,14 @@ class App extends Component {
       <div className="App">
         <header>
           <nav>
-            <Link to='/'>Landing</Link>
-            <Link to='/library'>Library</Link>  
-            <Link to='/album'>Album</Link>
+            <ul>
+            <li><Link to='/'>Landing</Link></li>
+            <li><Link to='/library'>Library</Link></li>
+            </ul>
           </nav>
+          <Jumbotron>
           <h1>Bloc Jams</h1>
+          </Jumbotron>
         </header>
         <main> {/*Route components with path and component props */}    
               

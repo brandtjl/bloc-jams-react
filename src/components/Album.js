@@ -12,11 +12,12 @@ class Album extends Component {
   //now it sets state.album property to album variable which is album with matching url
         this.state = {
             album: album,
-            currentSong: album.songs[0],
+            currentSong: ' ',
             currentTime: 0,
             duration: album.songs[0].duration,
             currentVolume: .5,
-            isPlaying: false
+            isPlaying: false,
+            isHovering: false
         };
         this.audioElement = document.createElement('audio'); //not assigned to state since that would trigger a re-render of DOM
         this.audioElement.src = album.songs[0].audioSrc; //set to the first song
@@ -111,7 +112,23 @@ class Album extends Component {
     }
         //this.setState({ currentTime: formattedTime });
     }
+    handleHover(e) {
+        //this.setState({currentSong: song});
+        //const isSameSong = this.state.currentSong === song; 
+        console.log(this.state.currentSong);
+        //console.log(song);
+        //if (isSameSong){
+        this.setState({ isHovering: true});
+        //}
+    }   
+    handleLeave(e) {
+        //const isSameSong = this.state.currentSong === song; 
+        //if (isSameSong){
+        this.setState({ isHovering: false});
+        //}
+    }
     render() {
+        //var setClassName = this.state.hovered && this.state.isPlaying ? 'ion-play' : 'ion-pause';
         return(
             <section className="album">
                 <section id="album-info">
@@ -129,10 +146,19 @@ class Album extends Component {
                         <col id="song-duration-column" />
                     </colgroup>   
                     <tbody> 
-                            {   //will only pause if i click on the first row/song 
+                            {  
                             this.state.album.songs.map( (song, index) => 
-                            <tr className="song" key={index} onClick={ () => this.handleSongClick(song) }>
-                            <td>{index + 1}</td>
+                            //<tr className="song" key={index} onClick={ () => this.handleSongClick(song)} onMouseEnter={ () => this.handleHover(song)} onMouseLeave={ () => this.handleLeave(song)}>
+                            <tr className="song" key={index} onClick={ () => this.handleSongClick(song)} onMouseEnter={ () => this.setState({isHovering: index})} onMouseLeave={ () => this.setState({isHovering: false})}>
+                            {/*//<td className={this.state.isHovering ? "ion-play" : "noClass"}>
+                            //    {!this.state.isHovering &&<div>{index + 1}
+                            //    </div>}
+                            //</td> */}
+                            <td className="song-number"> {this.state.currentSong === song?
+                                <span className ={this.state.isPlaying ? "ion-pause" : "ion-play"}></span>
+                                : this.state.isHovering === index ? <span className="ion-play"></span>
+                                : <span>{index + 1 + "."}</span>
+                            }</td>
                             <td>{song.title}</td>
                             <td>{this.formatTime(song.duration)}</td>
                             </tr>
